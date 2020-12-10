@@ -4,13 +4,14 @@ def arith_total(x: int) -> int:
 
 class ProgressBar(object):
     __slots__ = ("base_exp_requirement", "level_cap", "_exp", "_level")
+    _lvl_cap_default_ = float("inf")
 
     def __init__(self, level,
                  experience: float = None,
                  base_exp_requirement: int = 100,
                  level_cap: int = None):
         self.base_exp_requirement = base_exp_requirement
-        self.level_cap = float("inf") if level_cap is None else level_cap
+        self.level_cap = self._lvl_cap_default_ if level_cap is None else level_cap
         if experience is None:
             if isinstance(level, tuple):
                 level, experience = level
