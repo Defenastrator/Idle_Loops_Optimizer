@@ -21,13 +21,25 @@ class ProgressBar(object):
 
     def _bound_exp(self):
         if self._exp < 0:
-            pass
+            pv_exp = self.last_level_exp
+            while self._exp < 0:
+                self._exp += pv_exp
+                self._level -= 1
+                if self.level == 0:
+                    if self._exp < 0:
+                        self._exp = 0
+                    break
+        elif self._level == self.level_cap:
+            self._exp = 0
         else:
             nx_exp = self.level_up_exp
-            while self._exp > nx_exp:
+            while self._exp >= nx_exp:
                 self._exp -= nx_exp
+                self._level += 1
+                if self._level == self.level_cap:
+                    self._exp = 0.0
+                    break
                 nx_exp = self.level_up_exp
-
 
     @property
     def lvl(self) -> int:
@@ -38,6 +50,7 @@ class ProgressBar(object):
         if lvl < 0 or int(lvl) != lvl:
             raise ValueError("level must be an integer >= 0")
         self._level = int(lvl)
+        self._bound_exp()
 
     @property
     def exp(self):
@@ -45,11 +58,8 @@ class ProgressBar(object):
 
     @exp.setter
     def exp(self, val):
-
-        nx_exp = self.level_up_exp
-        while self._exp > nx_exp:
-            self._exp -= nx_exp
-            nx_exp = self.level_up_exp
+        self._exp = val
+        self._bound_exp()
 
     level = lvl
     experience = exp
@@ -73,6 +83,9 @@ class ProgressBar(object):
 
     def __iadd__(self, other):
         self.exp += other
+
+    def __isub__(self, other):
+        self.exp -= other
 
     def __int__(self):
         return self.level
