@@ -48,7 +48,7 @@ class ProgressBar(object):
     def lvl(self, lvl):
         if lvl < 0 or int(lvl) != lvl:
             raise ValueError("level must be an integer >= 0")
-        self._level = int(lvl)
+        self._level = min(int(lvl), self.level_cap)
         self._bound_exp()
 
     @property
@@ -132,6 +132,9 @@ class ProgressBar(object):
     def __ge__(self, o):
         c = self._compare_value(o)
         return c if c is NotImplemented else c >= o
+
+    def __str__(self):
+        return f"(level: {}"
 
 
 class Stat(object):
