@@ -135,7 +135,9 @@ class ProgressBar(object):
         return c if c is NotImplemented else c >= o
 
     def __str__(self):
-        return f"(level: {}"
+        lvlstr = f"{self.level}/{self.level_cap}" if self.level_cap is not self._lvl_cap_default_ else str(self.level)
+        return f"(level: {lvlstr} exp: {self.exp}/{self.level_up_exp} ({self.percent*100:4.1%})"
+
 
 
 class Stat(object):
