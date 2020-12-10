@@ -21,9 +21,8 @@ class ProgressBar(object):
 
     def _bound_exp(self):
         if self._exp < 0:
-            pv_exp = self.last_level_exp
             while self._exp < 0:
-                self._exp += pv_exp
+                self._exp += self.prev_level_exp
                 self._level -= 1
                 if self.level == 0:
                     if self._exp < 0:
@@ -78,8 +77,12 @@ class ProgressBar(object):
         return (self.level + 1) * self.base_exp_requirement
 
     @property
-    def last_level_exp(self) -> int:
+    def prev_level_exp(self) -> int:
         return self.level * self.base_exp_requirement
+
+    @property
+    def percent(self):
+        return self.exp / self.level_up_exp
 
     def __iadd__(self, other):
         self.exp += other
