@@ -139,7 +139,6 @@ class ProgressBar(object):
         return f"(level: {lvlstr} exp: {self.exp}/{self.level_up_exp} ({self.percent*100:4.1%})"
 
 
-
 class Stat(object):
     __slots__ = ("name", "exp", "talent", "souls")
 
